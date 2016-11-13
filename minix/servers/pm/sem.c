@@ -5,7 +5,10 @@
 #include <sys/time.h>
 #include "mproc.h"
 
+#ifndef SEM_ARRAY_INIT
+#define SEM_ARRAY_INIT
 int myArray[10];
+#endif
 
 int sem_create(int id)
 {

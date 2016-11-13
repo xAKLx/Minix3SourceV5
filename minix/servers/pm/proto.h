@@ -94,7 +94,7 @@ void tell_vfs(struct mproc *rmp, message *m_ptr);
 int get_date(void);
 
 /* sem.c */
-extern int myArray[10] = { 0 };
+extern int myArray[10];
 int sem_create(int id);
 int sem_terminate(int id);
 int sem_down(int id);
