@@ -10,8 +10,10 @@
 int myArray[10];
 #endif
 
-int sem_create(int id)
+int sem_create()
 {
+	int id = m_in.m1_i1;
+	
 	for(int i = 0; i < 10; i++)
 		printf("%d\n", myArray[i]);
 
@@ -19,21 +21,27 @@ int sem_create(int id)
 
 }
 
-int sem_terminate(int id)
+int sem_terminate()
 {
+	int id = m_in.m1_i1;
+
 	return 4;
 }
 
-int sem_down(int id)
+int sem_down()
 {
+	int id = m_in.m1_i1;
+
 	if(id >= 0 && id < 10)
 		myArray[id] = 1;
 
 	return 5;
 }
 
-int sem_up(int id)
+int sem_up()
 {
+	int id = m_in.m1_i1;
+
 	if(id >= 0 && id < 10)
 		myArray[id] = 0;
 
