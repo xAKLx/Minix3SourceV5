@@ -69,7 +69,6 @@ int sem_create()
 	//printf("\nDefault value of m1_i2: %d", m_in.m1_i2);
 
 	int id = m_in.m1_i1;
-	int pid = m_in.m1_i2;
 
 	if(id < 1 || id > 30)
 		return 1;
@@ -151,7 +150,7 @@ int sem_up()
 		}
 		else
 		{
-			kill(semArray[id-1]->process.first->value, SIGCONT)
+			kill(semArray[id-1]->process.first->value, SIGCONT);
 		}
 
 		return 0;
