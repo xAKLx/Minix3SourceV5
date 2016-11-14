@@ -115,7 +115,7 @@ typedef struct sem {
    Queue process;
 } Sem;
 
-extern Sem semArray[MAX_SEM];
+extern Sem *semArray[MAX_SEM];
 
 void InitSem(Sem *sem);
 

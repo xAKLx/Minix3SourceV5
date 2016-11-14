@@ -7,7 +7,7 @@
 
 #ifndef SEM_ARRAY_INIT
 #define SEM_ARRAY_INIT
-Sem semArray[MAX_SEM] = {NULL};
+Sem *semArray[MAX_SEM] = {NULL};
 #endif
 
 void InitQueue(Queue *queue)
