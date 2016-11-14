@@ -94,8 +94,31 @@ void tell_vfs(struct mproc *rmp, message *m_ptr);
 int get_date(void);
 
 /* sem.c */
-extern int myArray[10];
+#define MAX_SEM 30
+extern Sem semArray[MAX_SEM];
 int sem_create(void);
 int sem_terminate(void);
 int sem_down(void);
 int sem_up(void);
+void InitSem(Sem *sem);
+
+typedef struct node {
+	pid_t value;
+	struct node* next;
+}Node;
+
+typedef struct queue {
+	Node *first;
+	Node *last;
+} Queue;
+
+typedef struct sem {
+   int value;
+   Queue process;
+} Sem;
+
+void InitQueue(Queue *queue);
+// To Enqueue an integer
+void Enqueue(Queue *queue, pid_t procId);
+// To Dequeue an integer.
+pid_t Dequeue(Queue *queue);
