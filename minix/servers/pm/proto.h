@@ -95,7 +95,6 @@ int get_date(void);
 
 /* sem.c */
 #define MAX_SEM 30
-extern Sem semArray[MAX_SEM];
 int sem_create(void);
 int sem_terminate(void);
 int sem_down(void);
@@ -115,6 +114,8 @@ typedef struct sem {
    int value;
    Queue process;
 } Sem;
+
+extern Sem semArray[MAX_SEM];
 
 void InitSem(Sem *sem);
 
