@@ -20,7 +20,7 @@ void InitQueue(Queue *queue)
 // To Enqueue an integer
 void Enqueue(Queue *queue, pid_t procId) 
 {
-	Node* newNode = kmalloc(sizeof(Node), GFP_KERNEL);
+	Node* newNode = malloc(sizeof(Node));
 
 	newNode->next = NULL;
 	newNode->value = procId;
@@ -50,7 +50,7 @@ pid_t Dequeue(Queue *queue)
 	if(queue->first == NULL)
 		queue->last = NULL;
 
-	kfree(toDequeue);
+	free(toDequeue);
 
 	return procId;
 }
@@ -73,7 +73,7 @@ int sem_create()
 
 	if(semArray[id-1] == NULL)
 	{
-		Sem *sem = kmalloc(sizeof(Sem), GFP_KERNEL)
+		Sem *sem = malloc(sizeof(Sem))
 		InitSem(sem);
 
 		semArray[id-1] = sem;
@@ -94,7 +94,7 @@ int sem_terminate()
 
 	if(semArray[id-1] != NULL)
 	{
-		kfree(semArray[id-1]); 
+		free(semArray[id-1]); 
 		semArray[id-1] = NULL;
 		return 0;
 	}
