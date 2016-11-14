@@ -73,7 +73,7 @@ int sem_create()
 
 	if(semArray[id-1] == NULL)
 	{
-		Sem *sem = malloc(sizeof(Sem))
+		Sem *sem = malloc(sizeof(Sem));
 		InitSem(sem);
 
 		semArray[id-1] = sem;
