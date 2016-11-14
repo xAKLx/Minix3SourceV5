@@ -66,6 +66,7 @@ void InitSem(Sem *sem)
 int sem_create()
 {
 	printf("\nPid from sem = %d", getpid());
+	printf("\nDefault value of m1_i2: %d", m_in.m1_i2);
 
 	return 1;
 	int id = m_in.m1_i1;
