@@ -125,7 +125,7 @@ int sem_down()
 		kill(pid, SIGSTOP);
 	}
 
-	Enqueue(&(semArray[id-1]->queue), pid);
+	Enqueue(&(semArray[id-1]->process), pid);
 
 	return 0;
 }
