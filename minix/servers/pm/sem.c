@@ -65,11 +65,11 @@ void InitSem(Sem *sem)
 
 int sem_create()
 {
-	printf("\nPid from sem = %d", getpid());
-	printf("\nDefault value of m1_i2: %d", m_in.m1_i2);
+	//printf("\nPid from sem = %d", getpid());
+	//printf("\nDefault value of m1_i2: %d", m_in.m1_i2);
 
-	return 1;
 	int id = m_in.m1_i1;
+	int pid = m_in.m1_i2;
 
 	if(id < 1 || id > 30)
 		return 1;
@@ -110,6 +110,7 @@ int sem_terminate()
 int sem_down()
 {
 	int id = m_in.m1_i1;
+	int pid = m_in.m1_i2;
 
 	if(id < 1 || id > 30)
 		return -1;
@@ -117,13 +118,14 @@ int sem_down()
 	if(semArray[id-1]->value == 1)
 	{
 		semArray[id-1]->value = 0;
-		//add process to queue
 	}
 	else
 	{
 		//block process
-		//Add process to queue
+		kill(pid, SIGSTOP);
 	}
+
+	Enqueue(&(semArray[id-1]->queue), pid);
 
 	return 0;
 }
@@ -131,15 +133,27 @@ int sem_down()
 int sem_up()
 {
 	int id = m_in.m1_i1;
+	int pid = m_in.m1_i2;
 
 	if(id < 1 || id > 30)
 		return -1;
 
 	//check if process calling id is the one using the sem
-	if(semArray[id-1]->value == 0)
+	if(semArray[id-1]->value == 0 && semArray[id-1]->process.first->value == pid)
 	{
-		semArray[id-1]->value = 1;
+		
 		//remove process of queue
+		Dequeue(&(semArray[id-1]->process));
+
+		if(semArray[id-1]->process.first == NULL)
+		{
+			semArray[id-1]->value = 1;
+		}
+		else
+		{
+			kill(semArray[id-1]->process.first->value, SIGCONT)
+		}
+
 		return 0;
 	}
 	else
