@@ -100,7 +100,6 @@ int sem_create(void);
 int sem_terminate(void);
 int sem_down(void);
 int sem_up(void);
-void InitSem(Sem *sem);
 
 typedef struct node {
 	pid_t value;
@@ -116,6 +115,8 @@ typedef struct sem {
    int value;
    Queue process;
 } Sem;
+
+void InitSem(Sem *sem);
 
 void InitQueue(Queue *queue);
 // To Enqueue an integer
