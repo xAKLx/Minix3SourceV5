@@ -4,6 +4,7 @@
 #include <signal.h>
 #include <sys/time.h>
 #include "mproc.h"
+#include <stdlib.h>
 
 #ifndef SEM_ARRAY_INIT
 #define SEM_ARRAY_INIT
@@ -19,7 +20,7 @@ void InitQueue(Queue *queue)
 // To Enqueue an integer
 void Enqueue(Queue *queue, pid_t procId) 
 {
-	Node* newNode = kmalloc(sizeof(struct Node), GFP_KERNEL);
+	Node* newNode = kmalloc(sizeof(Node), GFP_KERNEL);
 
 	newNode->next = NULL;
 	newNode->value = procId;
@@ -40,7 +41,7 @@ void Enqueue(Queue *queue, pid_t procId)
 pid_t Dequeue(Queue *queue) 
 {
 
-	Node *toDequeue = queue->first
+	Node *toDequeue = queue->first;
 
 	pid_t procId = toDequeue->value;
 
@@ -57,7 +58,7 @@ pid_t Dequeue(Queue *queue)
 void InitSem(Sem *sem)
 {
 	sem->value = 1;
-	InitQueue(sem->process);
+	InitQueue(&(sem->process));
 }
 
 int sem_create()
@@ -72,10 +73,10 @@ int sem_create()
 
 	if(semArray[id-1] == NULL)
 	{
-		Sem *sem = kmalloc(sizeof(struct Sem), GFP_KERNEL)
+		Sem *sem = kmalloc(sizeof(Sem), GFP_KERNEL)
 		InitSem(sem);
 
-		semArray[id-1] = Sem;
+		semArray[id-1] = sem;
 		return 0;
 	}
 	else
@@ -110,7 +111,7 @@ int sem_down()
 	if(id < 1 || id > 30)
 		return -1;
 
-	if(semArray[id-1] == 1)
+	if(semArray[id-1]->value == 1)
 	{
 		semArray[id-1]->value = 0;
 		//add process to queue
@@ -132,7 +133,7 @@ int sem_up()
 		return -1;
 
 	//check if process calling id is the one using the sem
-	if(semArray[id-1] == 0)
+	if(semArray[id-1]->value == 0)
 	{
 		semArray[id-1]->value = 1;
 		//remove process of queue
