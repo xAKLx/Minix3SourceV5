@@ -5,6 +5,8 @@
 #include <sys/time.h>
 #include "mproc.h"
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #ifndef SEM_ARRAY_INIT
 #define SEM_ARRAY_INIT
