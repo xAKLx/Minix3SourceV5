@@ -121,6 +121,7 @@ int sem_down()
 	else
 	{
 		//block process
+		printf("\nblocking process: %d\n",pid);
 		kill(pid, SIGSTOP);
 	}
 
@@ -150,6 +151,7 @@ int sem_up()
 		}
 		else
 		{
+			printf("\nunblocking process: %d\n",semArray[id-1]->process.first->value;
 			kill(semArray[id-1]->process.first->value, SIGCONT);
 		}
 
