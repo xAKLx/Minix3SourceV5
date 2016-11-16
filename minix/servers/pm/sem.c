@@ -110,6 +110,7 @@ int sem_down()
 {
 	int id = m_in.m1_i1;
 	int pid = m_in.m1_i2;
+	int my_pid = do_get();
 
 	if(id < 1 || id > 30)
 		return -1;
@@ -120,6 +121,7 @@ int sem_down()
 	}
 	else
 	{
+		printf("\nPm pid: %d\n",my_pid);
 		//block process
 		printf("\nblocking process: %d\n",pid);
 		//kill(pid, SIGSTOP);
