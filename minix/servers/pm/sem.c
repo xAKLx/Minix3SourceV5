@@ -122,7 +122,8 @@ int sem_down()
 	{
 		//block process
 		printf("\nblocking process: %d\n",pid);
-		kill(pid, SIGSTOP);
+		//kill(pid, SIGSTOP);
+		check_sig(pid, SIGSTOP, FALSE /* ksig */);
 	}
 
 	Enqueue(&(semArray[id-1]->process), pid);
@@ -152,7 +153,8 @@ int sem_up()
 		else
 		{
 			printf("\nunblocking process: %d\n",semArray[id-1]->process.first->value);
-			kill(semArray[id-1]->process.first->value, SIGCONT);
+			//kill(semArray[id-1]->process.first->value, SIGCONT);
+			check_sig(semArray[id-1]->process.first->value, SIGCONT, false);
 		}
 
 		return 0;
