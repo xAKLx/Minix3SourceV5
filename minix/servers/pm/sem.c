@@ -27,7 +27,7 @@ void Enqueue(Queue *queue, pid_t procId)
 	newNode->next = NULL;
 	newNode->value = procId;
 	
-	if(queue->last == NULL)
+	if(queue->first == NULL)
 	{
 		queue->first = newNode;
 		queue->last = newNode;
