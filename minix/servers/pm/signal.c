@@ -572,6 +572,8 @@ int ksig;			/* non-zero means signal comes from kernel  */
   int count;			/* count # of signals sent */
   int error_code;
 
+  printf("\nSignal %d to process %d\n", signo, proc_id);
+
   if (signo < 0 || signo >= _NSIG) return(EINVAL);
 
   /* Return EINVAL for attempts to send SIGKILL to INIT alone. */
