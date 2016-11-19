@@ -19,6 +19,15 @@ void InitQueue(Queue *queue)
 	queue->last = NULL;
 }
 
+int IsInQueue(Queue *queue, int value)
+{
+	for(Node *item = queue->first; item != NULL; item = item->next)
+		if(item->value == value)
+			return 1;
+
+	return 0;
+}
+
 // To Enqueue an integer
 void Enqueue(Queue *queue, pid_t procId) 
 {
@@ -108,7 +117,8 @@ int sem_down()
 	if(id < 1 || id > MAX_SEM || semArray[id-1] == NULL)
 		return -1;
 
-	Enqueue(&(semArray[id-1]->process), pid);
+	if(IsInQueue(semArray[id-1]->process, pid) == 0)
+		Enqueue(&(semArray[id-1]->process), pid);
 
 	if(semArray[id-1]->value != 1 || semArray[id-1]->process.first->value != pid)
 		return 1;
