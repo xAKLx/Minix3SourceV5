@@ -70,7 +70,7 @@ int sem_create()
 
 	int id = m_in.m1_i1;
 
-	if(id < 1 || id > 30)
+	if(id < 1 || id > MAX_SEM)
 		return 1;
 
 	if(semArray[id-1] == NULL)
@@ -91,19 +91,12 @@ int sem_terminate()
 {
 	int id = m_in.m1_i1;
 
-	if(id < 1 || id > 30)
-		return 1;
-
-	if(semArray[id-1] != NULL)
-	{
-		free(semArray[id-1]); 
-		semArray[id-1] = NULL;
-		return 0;
-	}
-	else
-	{
+	if(id < 1 || id > MAX_SEM || semArray[id-1] == NULL)
 		return -1;
-	}
+
+	free(semArray[id-1]); 
+	semArray[id-1] = NULL;
+	return 0;
 }
 
 int sem_down()
@@ -111,27 +104,16 @@ int sem_down()
 	int id = m_in.m1_i1;
 	int pid = m_in.m1_i2;
 	int my_pid = do_get();
-	int source = m_in.m_source;
 
-	if(id < 1 || id > 30)
+	if(id < 1 || id > MAX_SEM || semArray[id-1] == NULL)
 		return -1;
-
-	if(semArray[id-1]->value == 1)
-	{
-		semArray[id-1]->value = 0;
-	}
-	else
-	{
-		printf("\nPm pid: %d\n",my_pid);
-		printf("\nPm Source: %d\n",source);
-		//block process
-		printf("\nblocking process: %d\n",pid);
-		//kill(pid, SIGSTOP);
-		check_sig(pid, SIGSTOP, FALSE /* ksig */);
-	}
 
 	Enqueue(&(semArray[id-1]->process), pid);
 
+	if(semArray[id-1]->value != 1 || semArray[id-1]->process.first->value != pid)
+		return 1;
+
+	semArray[id-1]->value = 0;
 	return 0;
 }
 
@@ -140,32 +122,21 @@ int sem_up()
 	int id = m_in.m1_i1;
 	int pid = m_in.m1_i2;
 
-	if(id < 1 || id > 30)
+	if(id < 1 || id > MAX_SEM || semArray[id-1] == NULL || semArray[id-1]->value != 0 
+		|| semArray[id-1]->process.first->value != pid)
 		return -1;
 
-	//check if process calling id is the one using the sem
-	if(semArray[id-1]->value == 0 && semArray[id-1]->process.first->value == pid)
-	{
-		
-		//remove process of queue
-		Dequeue(&(semArray[id-1]->process));
+	//remove process of queue
+	Dequeue(&(semArray[id-1]->process));
 
-		if(semArray[id-1]->process.first == NULL)
-		{
-			semArray[id-1]->value = 1;
-		}
-		else
-		{
-			printf("\nunblocking process: %d\n",semArray[id-1]->process.first->value);
-			//kill(semArray[id-1]->process.first->value, SIGCONT);
-			check_sig(semArray[id-1]->process.first->value, SIGCONT, FALSE);
-		}
+	semArray[id-1]->value = 1;
 
-		return 0;
-	}
-	else
+	if(semArray[id-1]->process.first != NULL)
 	{
-		return 1;
+		printf("\nunblocking process: %d\n",semArray[id-1]->process.first->value);
+		check_sig(semArray[id-1]->process.first->value, SIGCONT, FALSE);
 	}
+
+	return 0;
 	
 }
