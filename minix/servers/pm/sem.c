@@ -117,7 +117,7 @@ int sem_down()
 	if(id < 1 || id > MAX_SEM || semArray[id-1] == NULL)
 		return -1;
 
-	if(IsInQueue(semArray[id-1]->process, pid) == 0)
+	if(IsInQueue(&(semArray[id-1]->process), pid) == 0)
 		Enqueue(&(semArray[id-1]->process), pid);
 
 	if(semArray[id-1]->value != 1 || semArray[id-1]->process.first->value != pid)
