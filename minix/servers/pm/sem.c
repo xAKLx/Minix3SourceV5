@@ -114,6 +114,8 @@ int sem_down()
 	int pid = m_in.m1_i2;
 	int my_pid = do_get();
 
+	printf("\nCaller process = %d\n", who_p);
+
 	if(id < 1 || id > MAX_SEM || semArray[id-1] == NULL)
 		return -1;
 
