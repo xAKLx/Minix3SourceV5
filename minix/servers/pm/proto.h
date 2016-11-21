@@ -89,3 +89,38 @@ struct mproc *find_proc(pid_t lpid);
 int nice_to_priority(int nice, unsigned *new_q);
 int pm_isokendpt(int ep, int *proc);
 void tell_vfs(struct mproc *rmp, message *m_ptr);
+
+/* getdate.c */
+int get_date(void);
+
+/* sem.c */
+#define MAX_SEM 30
+int sem_create(void);
+int sem_terminate(void);
+int sem_down(void);
+int sem_up(void);
+
+typedef struct node {
+	pid_t value;
+	struct node* next;
+}Node;
+
+typedef struct queue {
+	Node *first;
+	Node *last;
+} Queue;
+
+typedef struct sem {
+   int value;
+   Queue process;
+} Sem;
+
+extern Sem *semArray[MAX_SEM];
+
+void InitSem(Sem *sem);
+
+void InitQueue(Queue *queue);
+// To Enqueue an integer
+void Enqueue(Queue *queue, pid_t procId);
+// To Dequeue an integer.
+pid_t Dequeue(Queue *queue);
